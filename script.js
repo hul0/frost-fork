@@ -1,4 +1,3 @@
-// Initialize GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------- DATA ---------------- */
@@ -16,36 +15,104 @@ const menuItems = [
 
 let cart = JSON.parse(localStorage.getItem('winterFeastCart')) || [];
 
-/* ---------------- LOGIC ---------------- */
+/* ---------------- NEW SNOW LOGIC ---------------- */
+const canvas = document.querySelector('.canvas'); // Updated selector
+const ctx = canvas ? canvas.getContext('2d') : null;
+const pixelRatio = window.devicePixelRatio || 1;
+const snowflakes = [];
+
+class Snowflake {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        const maxSize = 3;
+        this.size = Math.random() * (maxSize - 1) + 1;
+        this.velocity = this.size * 0.35;
+        const opacity = this.size / maxSize;
+        this.fill = `rgb(255 255 255 / ${opacity})`;
+        this.windSpeed = (Math.random() - 0.5) * 0.1;
+        this.windAngle = Math.random() * Math.PI * 2;
+    }
+    isOutsideCanvas() { return this.y > canvas.height + this.size; }
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = -this.size;
+    }
+    update() {
+        this.windAngle += this.windSpeed;
+        this.wind = Math.cos(this.windAngle) * 0.5;
+        this.x += this.wind;
+        this.y += this.velocity;
+        if (this.isOutsideCanvas()) { this.reset(); }
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.fill;
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
+const createSnowflakes = () => {
+    const snowflakeCount = Math.floor(window.innerWidth * window.innerHeight / 1400);
+    for (let i = 0; i < snowflakeCount; i++) {
+        snowflakes.push(new Snowflake());
+    }
+};
+
+const resizeCanvas = () => {
+    if (!canvas) return;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(pixelRatio, pixelRatio);
+    snowflakes.length = 0;
+    createSnowflakes();
+};
+
+const renderSnow = () => {
+    if (!ctx) return;
+    requestAnimationFrame(renderSnow);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    snowflakes.forEach(snowflake => {
+        snowflake.update();
+        snowflake.draw();
+    });
+};
+
+/* ---------------- APP LOGIC ---------------- */
 document.addEventListener('DOMContentLoaded', () => {
     renderMenu('all');
     updateCartUI();
-    initAdvancedSnow();
     startCountdown();
     initParallax();
+    
+    // Init New Snow System
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    renderSnow();
 });
 
 function renderMenu(category) {
     const grid = document.getElementById('menu-grid');
-    
-    // Fade out existing
     gsap.to(grid.children, {
         opacity: 0,
         y: 20,
         duration: 0.3,
-        stagger: 0.05,
         onComplete: () => {
             grid.innerHTML = '';
-            
-            const filtered = category === 'all' 
-                ? menuItems 
-                : menuItems.filter(item => item.category === category);
+            const filtered = category === 'all' ? menuItems : menuItems.filter(item => item.category === category);
 
             filtered.forEach(item => {
                 const card = document.createElement('div');
                 card.className = `menu-item glass-card rounded-2xl overflow-hidden group relative flex flex-col card-inner h-full opacity-0 transform translate-y-10`;
                 card.id = `item-${item.id}`;
                 
+                // Using the New Snowy Button Style below
                 card.innerHTML = `
                     <div class="h-56 overflow-hidden relative">
                         <img src="${item.img}" alt="${item.name}" id="img-${item.id}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -58,29 +125,23 @@ function renderMenu(category) {
                             <span class="font-header text-xl text-cyan-400">$${item.price.toFixed(2)}</span>
                         </div>
                         <p class="text-slate-400 text-sm mb-6 flex-1 font-light leading-relaxed">${item.desc}</p>
-                        <button onclick="addToCart(event, ${item.id})" class="w-full py-3 rounded-lg border border-white/20 text-white font-semibold hover:bg-white hover:text-slate-900 transition-all active:scale-95 flex items-center justify-center gap-2 group-btn">
-                            <span>Add to Order</span> 
-                            <i class="fas fa-plus text-xs group-btn-hover:rotate-180 transition-transform"></i>
-                        </button>
+                        
+                        <div class="pt-2">
+                            <button onclick="addToCart(event, ${item.id})" class="snow-btn">
+                                Add to Order
+                            </button>
+                        </div>
+
                     </div>
                 `;
                 grid.appendChild(card);
             });
 
-            // GSAP Stagger In
             gsap.to(".menu-item", {
-                scrollTrigger: {
-                    trigger: "#menu-grid",
-                    start: "top bottom-=100",
-                },
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out"
+                scrollTrigger: { trigger: "#menu-grid", start: "top bottom-=100" },
+                y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out"
             });
             
-            // Update Active Filter
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('bg-white', 'text-slate-900', 'border-transparent');
                 if(btn.innerText.toLowerCase() === category || (category === 'all' && btn.innerText === 'All')) {
@@ -93,24 +154,18 @@ function renderMenu(category) {
 
 function filterMenu(cat) { renderMenu(cat); }
 
-/* ---------------- CART & ANIMATION ---------------- */
 function addToCart(event, id) {
     const item = menuItems.find(i => i.id === id);
-    
-    // 1. Logic Update
     const existing = cart.find(i => i.id === id);
     if (existing) existing.qty++;
     else cart.push({ ...item, qty: 1 });
-    
     saveCart();
     
-    // 2. Flight Animation
-    const btn = event.target.closest('button');
+    // Animation Logic
     const imgEl = document.getElementById(`img-${id}`);
     const cartIcon = document.getElementById('cart-btn-nav');
     
     if(imgEl && cartIcon) {
-        // Clone Image
         const flyImg = imgEl.cloneNode();
         const rect = imgEl.getBoundingClientRect();
         const targetRect = cartIcon.getBoundingClientRect();
@@ -123,49 +178,30 @@ function addToCart(event, id) {
         
         document.body.appendChild(flyImg);
         
-        // GSAP Flight Path
         gsap.to(flyImg, {
-            top: targetRect.top + 10,
-            left: targetRect.left + 10,
-            width: 20,
-            height: 20,
-            opacity: 0,
-            borderRadius: "50%",
-            duration: 0.8,
-            ease: "power2.inOut",
+            top: targetRect.top + 10, left: targetRect.left + 10,
+            width: 20, height: 20, opacity: 0, borderRadius: "50%",
+            duration: 0.8, ease: "power2.inOut",
             onComplete: () => {
                 flyImg.remove();
                 updateCartUI();
-                
-                // Cart Wiggle
-                gsap.fromTo(cartIcon, 
-                    { rotate: -15, scale: 1.2 }, 
-                    { rotate: 0, scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" }
-                );
-                
+                gsap.fromTo(cartIcon, { rotate: -15, scale: 1.2 }, { rotate: 0, scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" });
                 showToast(`Added ${item.name}`);
             }
         });
-    } else {
-        updateCartUI();
-    }
+    } else { updateCartUI(); }
 }
 
 function updateCartUI() {
     const badge = document.getElementById('cart-badge');
     const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
-    
     badge.innerText = totalQty;
     badge.classList.toggle('scale-0', totalQty === 0);
     badge.classList.toggle('scale-100', totalQty > 0);
     
     const container = document.getElementById('cart-items');
     if(cart.length === 0) {
-        container.innerHTML = `
-            <div class="flex flex-col items-center justify-center h-full opacity-50">
-                <i class="fa-regular fa-snowflake text-6xl text-cyan-200 mb-4 animate-pulse"></i>
-                <p class="font-header text-xl text-slate-300">It's cold in here...</p>
-            </div>`;
+        container.innerHTML = `<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-regular fa-snowflake text-6xl text-cyan-200 mb-4 animate-pulse"></i><p class="font-header text-xl text-slate-300">It's cold in here...</p></div>`;
     } else {
         container.innerHTML = cart.map(item => `
             <div class="glass-card p-3 rounded-lg flex gap-3 items-center border-l-2 border-cyan-400">
@@ -182,7 +218,6 @@ function updateCartUI() {
             </div>
         `).join('');
     }
-    
     const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
     document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
 }
@@ -201,7 +236,6 @@ function toggleCart() {
     const drawer = document.getElementById('cart-drawer');
     const overlay = document.getElementById('cart-overlay');
     const isOpen = !drawer.classList.contains('translate-x-full');
-    
     if(isOpen) {
         drawer.classList.add('translate-x-full');
         overlay.classList.remove('opacity-100');
@@ -209,11 +243,7 @@ function toggleCart() {
         setTimeout(() => overlay.classList.add('hidden'), 300);
     } else {
         overlay.classList.remove('hidden');
-        setTimeout(() => {
-            overlay.classList.remove('opacity-0');
-            overlay.classList.add('opacity-100');
-            drawer.classList.remove('translate-x-full');
-        }, 10);
+        setTimeout(() => { overlay.classList.remove('opacity-0'); overlay.classList.add('opacity-100'); drawer.classList.remove('translate-x-full'); }, 10);
     }
 }
 
@@ -228,111 +258,20 @@ function checkout() {
 
 function saveCart() { localStorage.setItem('winterFeastCart', JSON.stringify(cart)); }
 
-function showToast(msg, success = true) {
+function showToast(msg) {
     const toast = document.getElementById('toast');
     document.getElementById('toast-msg').innerText = msg;
     toast.classList.remove('translate-y-20', 'opacity-0');
     setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
 }
 
-/* ---------------- INTERACTIVE & VISUALS ---------------- */
-
-// 1. Advanced Snow with Mouse Interaction
-function initAdvancedSnow() {
-    const canvas = document.getElementById('snowCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-    
-    // Mouse tracking for snow repulsion
-    let mouseX = -1000;
-    let mouseY = -1000;
-    
-    document.addEventListener('mousemove', e => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        initParticles();
-    }
-
-    function initParticles() {
-        particles = [];
-        const count = window.innerWidth < 768 ? 50 : 150;
-        for(let i = 0; i < count; i++) {
-            particles.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                r: Math.random() * 2 + 1, // radius
-                d: Math.random() * count, // density
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: Math.random() * 1 + 0.5
-            });
-        }
-    }
-
-    function draw() {
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
-        ctx.beginPath();
-        
-        for(let i = 0; i < particles.length; i++) {
-            let p = particles[i];
-            
-            // Mouse Interaction (Wind Effect)
-            const dx = p.x - mouseX;
-            const dy = p.y - mouseY;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            
-            if(dist < 100) {
-                const angle = Math.atan2(dy, dx);
-                const force = (100 - dist) / 100;
-                p.x += Math.cos(angle) * force * 2;
-                p.y += Math.sin(angle) * force * 2;
-            }
-
-            // Move
-            p.y += p.vy;
-            p.x += p.vx; // Horizontal drift
-
-            // Wrap
-            if(p.y > height) {
-                p.y = -10;
-                p.x = Math.random() * width;
-            }
-            if(p.x > width) p.x = 0;
-            if(p.x < 0) p.x = width;
-
-            ctx.moveTo(p.x, p.y);
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
-        }
-        ctx.fill();
-        requestAnimationFrame(draw);
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-    draw();
-}
-
-// 2. Parallax Hero Effect
 function initParallax() {
     const hero = document.getElementById('hero');
     const els = document.querySelectorAll('.parallax-el');
-    
     hero.addEventListener('mousemove', (e) => {
         const x = (window.innerWidth - e.pageX * 2) / 100;
         const y = (window.innerHeight - e.pageY * 2) / 100;
-
-        // Move text slightly
         document.getElementById('hero-content').style.transform = `translate(${x/5}px, ${y/5}px)`;
-
-        // Move orbs
         els.forEach(el => {
             const speed = el.getAttribute('data-speed');
             el.style.transform = `translate(${x * speed * 50}px, ${y * speed * 50}px)`;
@@ -340,22 +279,17 @@ function initParallax() {
     });
 }
 
-// 3. Countdown Timer
 function startCountdown() {
     const target = new Date();
-    target.setDate(target.getDate() + 5); // 5 days from now
-    
+    target.setDate(target.getDate() + 5); 
     function update() {
         const now = new Date();
         const diff = target - now;
-        
         if (diff <= 0) return;
-
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
-
         document.getElementById('days').innerText = String(d).padStart(2, '0');
         document.getElementById('hours').innerText = String(h).padStart(2, '0');
         document.getElementById('mins').innerText = String(m).padStart(2, '0');
@@ -366,7 +300,6 @@ function startCountdown() {
 }
 
 function toggleMusic(btn) {
-    // Visual toggle only for this demo
     const icon = btn.querySelector('i');
     if(icon.classList.contains('fa-volume-mute')) {
         icon.classList.remove('fa-volume-mute');
@@ -378,90 +311,3 @@ function toggleMusic(btn) {
         showToast('Sound muted');
     }
 }
-
-
-
-const canvas = document.querySelector('.canvas');
-const ctx = canvas.getContext('2d');
-
-const pixelRatio = window.devicePixelRatio || 1;
-
-const snowflakes = [];
-
-class Snowflake {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-
-    const maxSize = 3;
-    this.size = Math.random() * (maxSize - 1) + 1;
-    this.velocity = this.size * 0.35;
-    const opacity = this.size / maxSize;
-    this.fill = `rgb(255 255 255 / ${opacity})`;
-
-    this.windSpeed = (Math.random() - 0.5) * 0.1;
-    this.windAngle = Math.random() * Math.PI * 2;
-  }
-  isOutsideCanvas() {
-    return this.y > canvas.height + this.size;
-  }
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = -this.size;
-  }
-  update() {
-    this.windAngle += this.windSpeed;
-    this.wind = Math.cos(this.windAngle) * 0.5;
-
-    this.x += this.wind;
-    this.y += this.velocity;
-
-    if (this.isOutsideCanvas()) {
-      this.reset();
-    }
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = this.fill;
-    ctx.fill();
-    ctx.closePath();
-  }}
-
-
-const createSnowflakes = () => {
-  snowflakeCount = Math.floor(window.innerWidth * window.innerHeight / 1400);
-
-  for (let i = 0; i < snowflakeCount; i++) {
-    snowflakes.push(new Snowflake());
-  }
-};
-
-const resizeCanvas = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  canvas.width = width * pixelRatio;
-  canvas.height = height * pixelRatio;
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
-  ctx.scale(pixelRatio, pixelRatio);
-  snowflakes.length = 0;
-  createSnowflakes();
-};
-
-window.addEventListener('resize', resizeCanvas);
-
-resizeCanvas();
-
-const render = () => {
-  requestAnimationFrame(render);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  snowflakes.forEach(snowflake => {
-    snowflake.update();
-    snowflake.draw();
-  });
-};
-
-render();
-//# sourceURL=pen.js
-    

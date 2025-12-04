@@ -56,80 +56,64 @@ body {
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
 }
 
-/* 3D Tilt perspective container */
-.perspective-container {
-    perspective: 1000px;
+.perspective-container { perspective: 1000px; }
+.card-inner { transform-style: preserve-3d; }
+
+/* ----------------------------------------------------
+   NEW SNOWY BUTTON STYLES 
+   ---------------------------------------------------- */
+.snow-btn {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 12px 16px;
+    width: 100%; /* Responsive width */
+    min-width: 8em;
+    text-align: center;
+    color: #fff;
+    /* Red Gradient Background */
+    background-image: linear-gradient(to bottom, #f12828, #a00332, #9f0f31), linear-gradient(to bottom, #ae0034, #6f094c);
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.25), inset 0 -1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.25);
+    transition-property: transform, filter;
+    transition-duration: 0.2s;
+    will-change: transform;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    /* Margin top to allow space for snow cap inside containers */
+    margin-top: 8px; 
 }
 
-.card-inner {
-    transform-style: preserve-3d;
+.snow-btn:active {
+    transform: scale(0.92);
+    filter: brightness(0.8);
 }
 
-.button-resizer {
-  padding: 12px;
-  min-width: -webkit-fit-content;
-  min-width: -moz-fit-content;
-  min-width: fit-content;
-  overflow: hidden;
-  resize: horizontal;
-}
-
-.button {
-  position: relative;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 8px 16px;
-  width: 100%;
-  min-width: 8em;
-  text-align: center;
-  color: #fff;
-  background-image: linear-gradient(to bottom, #f12828, #a00332, #9f0f31), linear-gradient(to bottom, #ae0034, #6f094c);
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.25), inset 0 -1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.25);
-  transition-property: transform, filter;
-  transition-duration: 0.2s;
-  will-change: transform;
-  resize: both;
-}
-.button:active {
-  transform: scale(0.92);
-  filter: brightness(0.8);
-}
-
-.button::after {
-  --overflow-x: 4px;
-  --snow-image: url("https://assets.codepen.io/4175254/snow-cap-test-2.png");
-  content: "";
-  position: absolute;
-  top: -6px;
-  left: calc(var(--overflow-x) * -1);
-  border-image-source: var(--snow-image);
-  border-image-slice: calc(6 * 56 / 20) fill;
-  border-image-width: calc(28px / 3);
-  border-image-repeat: round;
-  width: calc(100% + var(--overflow-x) * 2);
-  height: 28px;
-  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25));
-  opacity: 1;
-  -webkit-animation: fade-in 2s;
-          animation: fade-in 2s;
-}
-
-@-webkit-keyframes fade-in {
-  0%, 50% {
-    opacity: 0;
-  }
-  100% {
+.snow-btn::after {
+    --overflow-x: 4px;
+    --snow-image: url("https://assets.codepen.io/4175254/snow-cap-test-2.png");
+    content: "";
+    position: absolute;
+    /* Positioned to sit on top */
+    top: -6px; 
+    left: calc(var(--overflow-x) * -1);
+    border-image-source: var(--snow-image);
+    border-image-slice: calc(6 * 56 / 20) fill;
+    border-image-width: calc(28px / 3);
+    border-image-repeat: round;
+    width: calc(100% + var(--overflow-x) * 2);
+    height: 28px;
+    filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25));
     opacity: 1;
-  }
+    animation: fade-in 2s;
+    pointer-events: none; /* Ensure clicks pass through the snow to the button */
 }
 
 @keyframes fade-in {
-  0%, 50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    0%, 50% { opacity: 0; }
+    100% { opacity: 1; }
 }

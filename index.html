@@ -13,7 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -27,10 +26,7 @@
                     colors: {
                         'night-blue': '#0f172a',
                         'aurora-green': '#10b981',
-                        'aurora-purple': '#8b5cf6',
-                        'ice-blue': '#e0f7fa',
                         'gold-luxury': '#FFD700',
-                        'glass-border': 'rgba(255, 255, 255, 0.2)',
                     },
                     backgroundImage: {
                         'aurora': 'linear-gradient(125deg, #000428 0%, #004e92 30%, #2c3e50 60%, #4ca1af 100%)',
@@ -57,7 +53,7 @@
 </head>
 <body class="font-body bg-aurora animate-aurora-move min-h-screen selection:bg-cyan-500 selection:text-white">
 
-    <canvas id="snowCanvas" class="fixed inset-0 pointer-events-none z-0 w-full h-full opacity-80"></canvas>
+    <canvas class="canvas fixed inset-0 pointer-events-none z-0 w-full h-full opacity-80" id="snowCanvas"></canvas>
 
     <nav class="fixed w-full z-50 transition-all duration-300 top-0 left-0" id="navbar">
         <div class="glass-panel mx-4 mt-4 rounded-full px-8 py-4 flex justify-between items-center max-w-7xl lg:mx-auto shadow-[0_0_15px_rgba(186,230,253,0.15)]">
@@ -85,9 +81,9 @@
         <div class="absolute top-1/4 left-10 w-24 h-24 bg-blue-500/20 blur-3xl rounded-full parallax-el" data-speed="0.05"></div>
         <div class="absolute bottom-1/3 right-10 w-48 h-48 bg-purple-500/20 blur-3xl rounded-full parallax-el" data-speed="0.08"></div>
         
-        <div class="z-10 text-center max-w-5xl mx-auto transform transition-transform duration-100 ease-out" id="hero-content">
+        <div class="z-10 text-center max-w-5xl mx-auto" id="hero-content">
             <div class="mb-4 inline-block">
-                <span class="py-1 px-4 border border-cyan-500/30 rounded-full bg-cyan-900/30 backdrop-blur-sm text-cyan-300 text-sm font-bold tracking-widest uppercase mb-4 ">
+                <span class="py-1 px-4 border border-cyan-500/30 rounded-full bg-cyan-900/30 backdrop-blur-sm text-cyan-300 text-sm font-bold tracking-widest uppercase mb-4 animate-pulse">
                     Reservations Closing Soon
                 </span>
             </div>
@@ -102,8 +98,8 @@
             </p>
 
             <div class="flex flex-col md:flex-row justify-center gap-6">
-                <a href="#menu" class="group relative px-8 py-4 bg-white/10 overflow-hidden rounded-full backdrop-blur-sm border border-white/30 text-white font-bold transition-all hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-                    <div class=" absolute inset-0 w-0 bg-cyan-500/20 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                <a href="#menu" class="group relative px-8 py-4 bg-white/10 overflow-hidden rounded-full backdrop-blur-sm border border-white/30 text-white font-bold transition-all hover:border-cyan-400">
+                    <div class="absolute inset-0 w-0 bg-cyan-500/20 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
                     <span class="relative flex items-center gap-2">Explore Menu <i class="fas fa-arrow-down group-hover:translate-y-1 transition-transform"></i></span>
                 </a>
             </div>
@@ -118,7 +114,6 @@
     </header>
 
     <main id="menu" class="relative z-10 max-w-7xl mx-auto px-4 py-24">
-        
         <div class="flex flex-wrap justify-center gap-4 mb-16" id="filters">
             <button onclick="filterMenu('all')" class="filter-btn active px-8 py-2 rounded-full border border-white/10 text-slate-300 font-bold hover:bg-white/10 hover:text-white transition-all bg-white/5 backdrop-blur-md">All</button>
             <button onclick="filterMenu('warm')" class="filter-btn px-8 py-2 rounded-full border border-white/10 text-slate-300 font-bold hover:bg-white/10 hover:text-white transition-all bg-white/5 backdrop-blur-md">Warmers</button>
@@ -128,27 +123,11 @@
 
         <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-container">
             </div>
-
     </main>
-
-    <footer class="relative z-10 glass-panel border-t border-white/10 mt-20">
-        <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <h3 class="font-header text-2xl text-white mb-2">The Frosty Fork</h3>
-                <p class="text-slate-400 text-sm">Where winter meets culinary art.</p>
-            </div>
-            <div class="flex gap-6">
-                <a href="#" class="text-slate-400 hover:text-cyan-400 transition-colors text-xl"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-slate-400 hover:text-cyan-400 transition-colors text-xl"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-slate-400 hover:text-cyan-400 transition-colors text-xl"><i class="fab fa-tiktok"></i></a>
-            </div>
-        </div>
-    </footer>
 
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden transition-opacity duration-300 opacity-0"></div>
     
     <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#0f172a]/90 backdrop-blur-xl border-l border-white/20 z-[70] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-2xl">
-        
         <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
             <h2 class="font-header text-2xl text-white"><i class="fas fa-shopping-bag text-cyan-400 mr-2"></i> Your Sleigh</h2>
             <button onclick="toggleCart()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-slate-300 hover:bg-red-500/20 hover:text-red-400 transition-all">
@@ -156,22 +135,16 @@
             </button>
         </div>
 
-        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
-            <div class="flex flex-col items-center justify-center h-full opacity-50">
-                <i class="fa-regular fa-snowflake text-6xl text-cyan-200 mb-4 animate-pulse"></i>
-                <p class="font-header text-xl text-slate-300">It's cold in here...</p>
-                <p class="text-sm text-slate-500 mt-2">Add some warmth to your cart</p>
-            </div>
-        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
 
         <div class="p-6 border-t border-white/10 bg-white/5">
             <div class="flex justify-between items-center mb-6 text-slate-200">
                 <span class="text-sm uppercase tracking-wider">Total Amount</span>
                 <span id="cart-total" class="font-header text-2xl text-cyan-400 font-bold">$0.00</span>
             </div>
-            <button onclick="checkout()" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold tracking-wide shadow-lg hover:shadow-cyan-500/30 transform active:scale-[0.98] transition-all overflow-hidden relative group">
+            
+            <button onclick="checkout()" class="snow-btn">
                 <span class="relative z-10 flex justify-center items-center gap-2">Proceed to Checkout <i class="fas fa-arrow-right"></i></span>
-                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </button>
         </div>
     </div>
