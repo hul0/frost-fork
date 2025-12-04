@@ -5,17 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Frosty Fork | Premium Winter Dining</title>
     
-    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="styles.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- GSAP for High-End Animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
-    <!-- Google Fonts: Cinzel (Elegant) & Lato (Clean) -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -56,82 +54,11 @@
             }
         }
     </script>
-
-    <style>
-        body {
-            background-size: 400% 400%;
-            overflow-x: hidden;
-            color: #f8fafc;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
-
-        /* Glassmorphism Classes */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 0 20px rgba(186, 230, 253, 0.2);
-        }
-
-        /* Text Gradients */
-        .text-gradient-gold {
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .text-gradient-ice {
-            background: linear-gradient(to right, #a5f3fc, #e0f2fe);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Flying Image Animation Class */
-        .flying-img {
-            position: fixed;
-            z-index: 9999;
-            pointer-events: none;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-        }
-
-        /* 3D Tilt perspective container */
-        .perspective-container {
-            perspective: 1000px;
-        }
-        
-        .card-inner {
-            transform-style: preserve-3d;
-        }
-    </style>
 </head>
 <body class="font-body bg-aurora animate-aurora-move min-h-screen selection:bg-cyan-500 selection:text-white">
 
-    <!-- Advanced Snow Canvas -->
     <canvas id="snowCanvas" class="fixed inset-0 pointer-events-none z-0 w-full h-full opacity-80"></canvas>
 
-    <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-300 top-0 left-0" id="navbar">
         <div class="glass-panel mx-4 mt-4 rounded-full px-8 py-4 flex justify-between items-center max-w-7xl lg:mx-auto shadow-[0_0_15px_rgba(186,230,253,0.15)]">
             <div class="flex items-center gap-3">
@@ -142,7 +69,6 @@
             </div>
             
             <div class="flex items-center gap-6">
-                <!-- Music Toggle (Visual Only) -->
                 <button onclick="toggleMusic(this)" class="text-slate-400 hover:text-white transition-colors hidden sm:block">
                     <i class="fas fa-volume-mute text-xl"></i>
                 </button>
@@ -155,15 +81,13 @@
         </div>
     </nav>
 
-    <!-- Hero Section with 3D Parallax -->
     <header class="relative min-h-screen flex items-center justify-center px-4 overflow-hidden perspective-container" id="hero">
-        <!-- Floating Parallax Elements -->
         <div class="absolute top-1/4 left-10 w-24 h-24 bg-blue-500/20 blur-3xl rounded-full parallax-el" data-speed="0.05"></div>
         <div class="absolute bottom-1/3 right-10 w-48 h-48 bg-purple-500/20 blur-3xl rounded-full parallax-el" data-speed="0.08"></div>
         
         <div class="z-10 text-center max-w-5xl mx-auto transform transition-transform duration-100 ease-out" id="hero-content">
             <div class="mb-4 inline-block">
-                <span class="py-1 px-4 border border-cyan-500/30 rounded-full bg-cyan-900/30 backdrop-blur-sm text-cyan-300 text-sm font-bold tracking-widest uppercase mb-4 animate-pulse">
+                <span class="py-1 px-4 border border-cyan-500/30 rounded-full bg-cyan-900/30 backdrop-blur-sm text-cyan-300 text-sm font-bold tracking-widest uppercase mb-4 ">
                     Reservations Closing Soon
                 </span>
             </div>
@@ -179,12 +103,11 @@
 
             <div class="flex flex-col md:flex-row justify-center gap-6">
                 <a href="#menu" class="group relative px-8 py-4 bg-white/10 overflow-hidden rounded-full backdrop-blur-sm border border-white/30 text-white font-bold transition-all hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-                    <div class="absolute inset-0 w-0 bg-cyan-500/20 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                    <div class=" absolute inset-0 w-0 bg-cyan-500/20 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
                     <span class="relative flex items-center gap-2">Explore Menu <i class="fas fa-arrow-down group-hover:translate-y-1 transition-transform"></i></span>
                 </a>
             </div>
 
-            <!-- Countdown -->
             <div class="mt-16 grid grid-cols-4 gap-4 max-w-lg mx-auto text-center glass-panel p-4 rounded-xl">
                 <div><span class="block font-header text-2xl text-cyan-400" id="days">00</span><span class="text-xs text-slate-400 uppercase">Days</span></div>
                 <div><span class="block font-header text-2xl text-cyan-400" id="hours">00</span><span class="text-xs text-slate-400 uppercase">Hrs</span></div>
@@ -194,10 +117,8 @@
         </div>
     </header>
 
-    <!-- Menu Section -->
     <main id="menu" class="relative z-10 max-w-7xl mx-auto px-4 py-24">
         
-        <!-- Animated Filters -->
         <div class="flex flex-wrap justify-center gap-4 mb-16" id="filters">
             <button onclick="filterMenu('all')" class="filter-btn active px-8 py-2 rounded-full border border-white/10 text-slate-300 font-bold hover:bg-white/10 hover:text-white transition-all bg-white/5 backdrop-blur-md">All</button>
             <button onclick="filterMenu('warm')" class="filter-btn px-8 py-2 rounded-full border border-white/10 text-slate-300 font-bold hover:bg-white/10 hover:text-white transition-all bg-white/5 backdrop-blur-md">Warmers</button>
@@ -205,14 +126,11 @@
             <button onclick="filterMenu('savory')" class="filter-btn px-8 py-2 rounded-full border border-white/10 text-slate-300 font-bold hover:bg-white/10 hover:text-white transition-all bg-white/5 backdrop-blur-md">Savory</button>
         </div>
 
-        <!-- Masonry Grid -->
         <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-container">
-            <!-- Items injected via JS -->
-        </div>
+            </div>
 
     </main>
 
-    <!-- Footer -->
     <footer class="relative z-10 glass-panel border-t border-white/10 mt-20">
         <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-center md:text-left">
@@ -227,7 +145,6 @@
         </div>
     </footer>
 
-    <!-- Cart Drawer (Right Side) -->
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden transition-opacity duration-300 opacity-0"></div>
     
     <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#0f172a]/90 backdrop-blur-xl border-l border-white/20 z-[70] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-2xl">
@@ -240,7 +157,6 @@
         </div>
 
         <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
-            <!-- Empty State -->
             <div class="flex flex-col items-center justify-center h-full opacity-50">
                 <i class="fa-regular fa-snowflake text-6xl text-cyan-200 mb-4 animate-pulse"></i>
                 <p class="font-header text-xl text-slate-300">It's cold in here...</p>
@@ -260,393 +176,11 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[80] glass-panel px-6 py-3 rounded-full flex items-center gap-3 translate-y-20 opacity-0 transition-all duration-300 shadow-2xl">
         <i class="fas fa-check-circle text-aurora-green"></i>
         <span id="toast-msg" class="text-sm font-semibold text-white">Item added</span>
     </div>
 
-    <script>
-        // Initialize GSAP ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
-
-        /* ---------------- DATA ---------------- */
-        const menuItems = [
-            { id: 1, name: "Arctic King Crab", price: 45.00, desc: "Steamed legs with lemon-dill butter and frost-salt.", category: "savory", chef: true, img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80" },
-            { id: 2, name: "Reindeer Stew", price: 28.50, desc: "Hearty root vegetables and tender venison in red wine.", category: "savory", chef: false, img: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=600&q=80" },
-            { id: 3, name: "Frostbite Martini", price: 16.00, desc: "Vodka, blue curacao, white cacao, rimmed with sugar ice.", category: "warm", chef: false, img: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=600&q=80" },
-            { id: 4, name: "White Forest Cake", price: 12.00, desc: "White chocolate shavings, cherries, and vanilla sponge.", category: "sweet", chef: false, img: "https://images.unsplash.com/photo-1576618148400-f54bed99fcf8?auto=format&fit=crop&w=600&q=80" },
-            { id: 5, name: "Golden Glazed Ham", price: 32.00, desc: "Honey and clove glaze with a side of roasted chestnuts.", category: "savory", chef: true, img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" },
-            { id: 6, name: "North Pole Cocoa", price: 8.00, desc: "Thick european chocolate with a peppermint candy cane.", category: "warm", chef: false, img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80" },
-            { id: 7, name: "Yule Log", price: 14.50, desc: "Rolled sponge cake resembling a bark-covered log.", category: "sweet", chef: false, img: "https://images.unsplash.com/photo-1607920592519-bab4d790f489?auto=format&fit=crop&w=600&q=80" },
-            { id: 8, name: "Truffle Risotto", price: 26.00, desc: "Creamy arborio rice with black winter truffles.", category: "savory", chef: false, img: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=600&q=80" },
-            { id: 9, name: "Spiced Mulled Wine", price: 10.00, desc: "Warm red wine with star anise, cinnamon, and orange.", category: "warm", chef: false, img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80" }
-        ];
-
-        let cart = JSON.parse(localStorage.getItem('winterFeastCart')) || [];
-
-        /* ---------------- LOGIC ---------------- */
-        document.addEventListener('DOMContentLoaded', () => {
-            renderMenu('all');
-            updateCartUI();
-            initAdvancedSnow();
-            startCountdown();
-            initParallax();
-        });
-
-        function renderMenu(category) {
-            const grid = document.getElementById('menu-grid');
-            
-            // Fade out existing
-            gsap.to(grid.children, {
-                opacity: 0,
-                y: 20,
-                duration: 0.3,
-                stagger: 0.05,
-                onComplete: () => {
-                    grid.innerHTML = '';
-                    
-                    const filtered = category === 'all' 
-                        ? menuItems 
-                        : menuItems.filter(item => item.category === category);
-
-                    filtered.forEach(item => {
-                        const card = document.createElement('div');
-                        card.className = `menu-item glass-card rounded-2xl overflow-hidden group relative flex flex-col card-inner h-full opacity-0 transform translate-y-10`;
-                        card.id = `item-${item.id}`;
-                        
-                        card.innerHTML = `
-                            <div class="h-56 overflow-hidden relative">
-                                <img src="${item.img}" alt="${item.name}" id="img-${item.id}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
-                                ${item.chef ? `<div class="absolute top-3 right-3 bg-gold-luxury/90 text-slate-900 text-xs font-bold px-3 py-1 rounded-full animate-pulse-gold uppercase tracking-wider"><i class="fas fa-crown mr-1"></i> Chef's Choice</div>` : ''}
-                            </div>
-                            <div class="p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-transparent to-slate-900/50">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="font-header text-xl text-white group-hover:text-cyan-300 transition-colors">${item.name}</h3>
-                                    <span class="font-header text-xl text-cyan-400">$${item.price.toFixed(2)}</span>
-                                </div>
-                                <p class="text-slate-400 text-sm mb-6 flex-1 font-light leading-relaxed">${item.desc}</p>
-                                <button onclick="addToCart(event, ${item.id})" class="w-full py-3 rounded-lg border border-white/20 text-white font-semibold hover:bg-white hover:text-slate-900 transition-all active:scale-95 flex items-center justify-center gap-2 group-btn">
-                                    <span>Add to Order</span> 
-                                    <i class="fas fa-plus text-xs group-btn-hover:rotate-180 transition-transform"></i>
-                                </button>
-                            </div>
-                        `;
-                        grid.appendChild(card);
-                    });
-
-                    // GSAP Stagger In
-                    gsap.to(".menu-item", {
-                        scrollTrigger: {
-                            trigger: "#menu-grid",
-                            start: "top bottom-=100",
-                        },
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.8,
-                        stagger: 0.1,
-                        ease: "power3.out"
-                    });
-                    
-                    // Update Active Filter
-                    document.querySelectorAll('.filter-btn').forEach(btn => {
-                        btn.classList.remove('bg-white', 'text-slate-900', 'border-transparent');
-                        if(btn.innerText.toLowerCase() === category || (category === 'all' && btn.innerText === 'All')) {
-                            btn.classList.add('bg-white', 'text-slate-900', 'border-transparent');
-                        }
-                    });
-                }
-            });
-        }
-
-        function filterMenu(cat) { renderMenu(cat); }
-
-        /* ---------------- CART & ANIMATION ---------------- */
-        function addToCart(event, id) {
-            const item = menuItems.find(i => i.id === id);
-            
-            // 1. Logic Update
-            const existing = cart.find(i => i.id === id);
-            if (existing) existing.qty++;
-            else cart.push({ ...item, qty: 1 });
-            
-            saveCart();
-            
-            // 2. Flight Animation
-            const btn = event.target.closest('button');
-            const imgEl = document.getElementById(`img-${id}`);
-            const cartIcon = document.getElementById('cart-btn-nav');
-            
-            if(imgEl && cartIcon) {
-                // Clone Image
-                const flyImg = imgEl.cloneNode();
-                const rect = imgEl.getBoundingClientRect();
-                const targetRect = cartIcon.getBoundingClientRect();
-                
-                flyImg.classList.add('flying-img');
-                flyImg.style.width = `${rect.width}px`;
-                flyImg.style.height = `${rect.height}px`;
-                flyImg.style.top = `${rect.top}px`;
-                flyImg.style.left = `${rect.left}px`;
-                
-                document.body.appendChild(flyImg);
-                
-                // GSAP Flight Path
-                gsap.to(flyImg, {
-                    top: targetRect.top + 10,
-                    left: targetRect.left + 10,
-                    width: 20,
-                    height: 20,
-                    opacity: 0,
-                    borderRadius: "50%",
-                    duration: 0.8,
-                    ease: "power2.inOut",
-                    onComplete: () => {
-                        flyImg.remove();
-                        updateCartUI();
-                        
-                        // Cart Wiggle
-                        gsap.fromTo(cartIcon, 
-                            { rotate: -15, scale: 1.2 }, 
-                            { rotate: 0, scale: 1, duration: 0.4, ease: "elastic.out(1, 0.3)" }
-                        );
-                        
-                        showToast(`Added ${item.name}`);
-                    }
-                });
-            } else {
-                updateCartUI();
-            }
-        }
-
-        function updateCartUI() {
-            const badge = document.getElementById('cart-badge');
-            const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
-            
-            badge.innerText = totalQty;
-            badge.classList.toggle('scale-0', totalQty === 0);
-            badge.classList.toggle('scale-100', totalQty > 0);
-            
-            const container = document.getElementById('cart-items');
-            if(cart.length === 0) {
-                container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full opacity-50">
-                        <i class="fa-regular fa-snowflake text-6xl text-cyan-200 mb-4 animate-pulse"></i>
-                        <p class="font-header text-xl text-slate-300">It's cold in here...</p>
-                    </div>`;
-            } else {
-                container.innerHTML = cart.map(item => `
-                    <div class="glass-card p-3 rounded-lg flex gap-3 items-center border-l-2 border-cyan-400">
-                        <img src="${item.img}" class="w-12 h-12 rounded object-cover">
-                        <div class="flex-1">
-                            <h4 class="font-bold text-slate-200 text-sm">${item.name}</h4>
-                            <p class="text-cyan-400 text-xs">$${item.price}</p>
-                        </div>
-                        <div class="flex items-center gap-2 bg-white/10 rounded px-1">
-                            <button onclick="changeQty(${item.id}, -1)" class="w-5 h-5 flex items-center justify-center text-slate-300 hover:text-white">-</button>
-                            <span class="text-xs font-bold text-white w-3 text-center">${item.qty}</span>
-                            <button onclick="changeQty(${item.id}, 1)" class="w-5 h-5 flex items-center justify-center text-slate-300 hover:text-white">+</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
-            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
-        }
-
-        function changeQty(id, delta) {
-            const item = cart.find(i => i.id === id);
-            if(item) {
-                item.qty += delta;
-                if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
-                saveCart();
-                updateCartUI();
-            }
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            const overlay = document.getElementById('cart-overlay');
-            const isOpen = !drawer.classList.contains('translate-x-full');
-            
-            if(isOpen) {
-                drawer.classList.add('translate-x-full');
-                overlay.classList.remove('opacity-100');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-            } else {
-                overlay.classList.remove('hidden');
-                setTimeout(() => {
-                    overlay.classList.remove('opacity-0');
-                    overlay.classList.add('opacity-100');
-                    drawer.classList.remove('translate-x-full');
-                }, 10);
-            }
-        }
-
-        function checkout() {
-            if(cart.length === 0) return;
-            showToast("Order Sent to the North Pole!", true);
-            cart = [];
-            saveCart();
-            updateCartUI();
-            toggleCart();
-        }
-
-        function saveCart() { localStorage.setItem('winterFeastCart', JSON.stringify(cart)); }
-
-        function showToast(msg, success = true) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
-        }
-
-        /* ---------------- INTERACTIVE & VISUALS ---------------- */
-        
-        // 1. Advanced Snow with Mouse Interaction
-        function initAdvancedSnow() {
-            const canvas = document.getElementById('snowCanvas');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            let particles = [];
-            
-            // Mouse tracking for snow repulsion
-            let mouseX = -1000;
-            let mouseY = -1000;
-            
-            document.addEventListener('mousemove', e => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            });
-
-            function resize() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-                initParticles();
-            }
-
-            function initParticles() {
-                particles = [];
-                const count = window.innerWidth < 768 ? 50 : 150;
-                for(let i = 0; i < count; i++) {
-                    particles.push({
-                        x: Math.random() * width,
-                        y: Math.random() * height,
-                        r: Math.random() * 2 + 1, // radius
-                        d: Math.random() * count, // density
-                        vx: (Math.random() - 0.5) * 0.5,
-                        vy: Math.random() * 1 + 0.5
-                    });
-                }
-            }
-
-            function draw() {
-                ctx.clearRect(0, 0, width, height);
-                ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
-                ctx.beginPath();
-                
-                for(let i = 0; i < particles.length; i++) {
-                    let p = particles[i];
-                    
-                    // Mouse Interaction (Wind Effect)
-                    const dx = p.x - mouseX;
-                    const dy = p.y - mouseY;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-                    
-                    if(dist < 100) {
-                        const angle = Math.atan2(dy, dx);
-                        const force = (100 - dist) / 100;
-                        p.x += Math.cos(angle) * force * 2;
-                        p.y += Math.sin(angle) * force * 2;
-                    }
-
-                    // Move
-                    p.y += p.vy;
-                    p.x += p.vx; // Horizontal drift
-
-                    // Wrap
-                    if(p.y > height) {
-                        p.y = -10;
-                        p.x = Math.random() * width;
-                    }
-                    if(p.x > width) p.x = 0;
-                    if(p.x < 0) p.x = width;
-
-                    ctx.moveTo(p.x, p.y);
-                    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
-                }
-                ctx.fill();
-                requestAnimationFrame(draw);
-            }
-
-            window.addEventListener('resize', resize);
-            resize();
-            draw();
-        }
-
-        // 2. Parallax Hero Effect
-        function initParallax() {
-            const hero = document.getElementById('hero');
-            const els = document.querySelectorAll('.parallax-el');
-            
-            hero.addEventListener('mousemove', (e) => {
-                const x = (window.innerWidth - e.pageX * 2) / 100;
-                const y = (window.innerHeight - e.pageY * 2) / 100;
-
-                // Move text slightly
-                document.getElementById('hero-content').style.transform = `translate(${x/5}px, ${y/5}px)`;
-
-                // Move orbs
-                els.forEach(el => {
-                    const speed = el.getAttribute('data-speed');
-                    el.style.transform = `translate(${x * speed * 50}px, ${y * speed * 50}px)`;
-                });
-            });
-        }
-
-        // 3. Countdown Timer
-        function startCountdown() {
-            const target = new Date();
-            target.setDate(target.getDate() + 5); // 5 days from now
-            
-            function update() {
-                const now = new Date();
-                const diff = target - now;
-                
-                if (diff <= 0) return;
-
-                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-                document.getElementById('days').innerText = String(d).padStart(2, '0');
-                document.getElementById('hours').innerText = String(h).padStart(2, '0');
-                document.getElementById('mins').innerText = String(m).padStart(2, '0');
-                document.getElementById('secs').innerText = String(s).padStart(2, '0');
-            }
-            setInterval(update, 1000);
-            update();
-        }
-
-        function toggleMusic(btn) {
-            // Visual toggle only for this demo
-            const icon = btn.querySelector('i');
-            if(icon.classList.contains('fa-volume-mute')) {
-                icon.classList.remove('fa-volume-mute');
-                icon.classList.add('fa-volume-up', 'text-cyan-400');
-                showToast('Festive ambiance enabled');
-            } else {
-                icon.classList.add('fa-volume-mute');
-                icon.classList.remove('fa-volume-up', 'text-cyan-400');
-                showToast('Sound muted');
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
