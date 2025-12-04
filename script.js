@@ -311,3 +311,54 @@ function toggleMusic(btn) {
         showToast('Sound muted');
     }
 }
+
+
+
+
+
+/* ---------------- COOKIE CONSENT ---------------- */
+function checkCookieConsent() {
+  const consent = localStorage.getItem('cookieConsent');
+  if (!consent) {
+    // Show popup after a brief delay for better UX
+    setTimeout(() => {
+      document.getElementById('cookie-popup').classList.remove('hidden');
+    }, 1000);
+  }
+}
+
+function acceptCookies() {
+  localStorage.setItem('cookieConsent', 'accepted');
+  localStorage.setItem('cookieConsentDate', new Date().toISOString());
+  closeCookiePopup();
+  // Optional: Initialize analytics or other cookie-dependent features here
+  console.log('Cookies accepted');
+}
+
+function rejectCookies() {
+  localStorage.setItem('cookieConsent', 'rejected');
+  localStorage.setItem('cookieConsentDate', new Date().toISOString());
+  closeCookiePopup();
+  console.log('Cookies rejected');
+}
+
+function closeCookiePopup() {
+  const popup = document.getElementById('cookie-popup');
+  popup.style.animation = 'fadeOut 0.3s ease';
+  setTimeout(() => {
+    popup.classList.add('hidden');
+  }, 300);
+}
+
+// Add fadeOut animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
+
+// Check consent on page load
+checkCookieConsent();
