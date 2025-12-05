@@ -27,15 +27,7 @@
       "chef": false,
       "img": "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 4,
-      "name": "White Forest Cake",
-      "price": 12.00,
-      "desc": "White chocolate shavings, cherries, and vanilla sponge.",
-      "category": "sweet",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1576618148400-f54bed99fcf8?auto=format&fit=crop&w=600&q=80"
-    },
+    
     {
       "id": 5,
       "name": "Golden Glazed Ham",
@@ -54,15 +46,7 @@
       "chef": false,
       "img": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 7,
-      "name": "Yule Log",
-      "price": 14.50,
-      "desc": "Rolled sponge cake resembling a bark-covered log.",
-      "category": "sweet",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1607920592519-bab4d790f489?auto=format&fit=crop&w=600&q=80"
-    },
+    
     {
       "id": 8,
       "name": "Truffle Risotto",
@@ -90,24 +74,8 @@
       "chef": true,
       "img": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 11,
-      "name": "Gingerbread Latte",
-      "price": 7.50,
-      "desc": "Espresso with gingerbread syrup and whipped cream.",
-      "category": "warm",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1578374173703-e5637f7da528?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      "id": 12,
-      "name": "Peppermint Bark",
-      "price": 9.00,
-      "desc": "Layered dark and white chocolate with crushed candy.",
-      "category": "sweet",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1606312619070-d48b4a0a4bf7?auto=format&fit=crop&w=600&q=80"
-    },
+    
+    
     {
       "id": 13,
       "name": "Winter Wellington",
@@ -117,15 +85,7 @@
       "chef": true,
       "img": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 14,
-      "name": "Eggnog Delight",
-      "price": 11.00,
-      "desc": "Traditional eggnog with rum and fresh nutmeg.",
-      "category": "warm",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1607631568010-a87852c7afb4?auto=format&fit=crop&w=600&q=80"
-    },
+    
     {
       "id": 15,
       "name": "Candy Cane Cheesecake",
@@ -279,24 +239,7 @@
       "chef": true,
       "img": "https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 32,
-      "name": "Pumpkin Spice Latte",
-      "price": 7.50,
-      "desc": "Espresso with pumpkin, cinnamon, and nutmeg.",
-      "category": "warm",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1578374173703-e5637f7da528?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      "id": 33,
-      "name": "Bûche de Noël",
-      "price": 15.00,
-      "desc": "Traditional French Christmas log cake with buttercream.",
-      "category": "sweet",
-      "chef": true,
-      "img": "https://images.unsplash.com/photo-1607920592519-bab4d790f489?auto=format&fit=crop&w=600&q=80"
-    },
+    
     {
       "id": 34,
       "name": "Foie Gras Terrine",
@@ -315,15 +258,7 @@
       "chef": false,
       "img": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 36,
-      "name": "Mince Pies",
-      "price": 9.50,
-      "desc": "Traditional British pies filled with spiced dried fruits.",
-      "category": "sweet",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1512910540282-6d9a7c8f3894?auto=format&fit=crop&w=600&q=80"
-    },
+   
     {
       "id": 37,
       "name": "Rack of Lamb",
@@ -333,15 +268,7 @@
       "chef": true,
       "img": "https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 38,
-      "name": "Glühwein",
-      "price": 9.50,
-      "desc": "German mulled wine with orange, cloves, and star anise.",
-      "category": "warm",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1544367146-149723f7e50a?auto=format&fit=crop&w=600&q=80"
-    },
+    
     {
       "id": 39,
       "name": "Crème Brûlée",
@@ -388,24 +315,6 @@
       "img": "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=600&q=80"
     },
     {
-      "id": 44,
-      "name": "Hot Toddy",
-      "price": 10.50,
-      "desc": "Whiskey with honey, lemon, and hot water.",
-      "category": "warm",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1544145945-35e9734c7632?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      "id": 45,
-      "name": "Speculoos Cookies",
-      "price": 7.50,
-      "desc": "Belgian spiced shortcrust biscuits.",
-      "category": "sweet",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1606313564210-d44a9e5c2e05?auto=format&fit=crop&w=600&q=80"
-    },
-    {
       "id": 46,
       "name": "Turducken",
       "price": 68.00,
@@ -414,24 +323,7 @@
       "chef": true,
       "img": "https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 47,
-      "name": "Amaretto Sour",
-      "price": 11.50,
-      "desc": "Amaretto with lemon juice and cherry garnish.",
-      "category": "warm",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1541695769957-f7a4be27c814?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      "id": 48,
-      "name": "Pfeffernüsse",
-      "price": 8.50,
-      "desc": "German spiced cookies with black pepper and molasses.",
-      "category": "sweet",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1603532648955-039e4e1e6d40?auto=format&fit=crop&w=600&q=80"
-    },
+    
     {
       "id": 49,
       "name": "Coq au Vin",
@@ -450,15 +342,7 @@
       "chef": false,
       "img": "https://images.unsplash.com/photo-1542990253-a781e04c0082?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 51,
-      "name": "Profiteroles",
-      "price": 12.00,
-      "desc": "Cream puffs filled with vanilla ice cream and chocolate.",
-      "category": "sweet",
-      "chef": false,
-      "img": "https://images.unsplash.com/photo-1612201142855-9fe9a87d260e?auto=format&fit=crop&w=600&q=80"
-    },
+   
     {
       "id": 52,
       "name": "Wild Boar Ragu",
@@ -477,15 +361,7 @@
       "chef": false,
       "img": "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=600&q=80"
     },
-    {
-      "id": 54,
-      "name": "Chocolate Truffles",
-      "price": 16.00,
-      "desc": "Assorted handmade chocolate truffles with ganache.",
-      "category": "sweet",
-      "chef": true,
-      "img": "https://images.unsplash.com/photo-1548848979-47519fe7446c?auto=format&fit=crop&w=600&q=80"
-    },
+   
     {
       "id": 55,
       "name": "Wagyu Steak",
