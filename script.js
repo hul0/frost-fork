@@ -1,19 +1,28 @@
 gsap.registerPlugin(ScrollTrigger);
 
 /* ---------------- DATA ---------------- */
-const menuItems = [
-    { id: 1, name: "Arctic King Crab", price: 45.00, desc: "Steamed legs with lemon-dill butter and frost-salt.", category: "savory", chef: true, img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80" },
-    { id: 2, name: "Reindeer Stew", price: 28.50, desc: "Hearty root vegetables and tender venison in red wine.", category: "savory", chef: false, img: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=600&q=80" },
-    { id: 3, name: "Frostbite Martini", price: 16.00, desc: "Vodka, blue curacao, white cacao, rimmed with sugar ice.", category: "warm", chef: false, img: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=600&q=80" },
-    { id: 4, name: "White Forest Cake", price: 12.00, desc: "White chocolate shavings, cherries, and vanilla sponge.", category: "sweet", chef: false, img: "https://images.unsplash.com/photo-1576618148400-f54bed99fcf8?auto=format&fit=crop&w=600&q=80" },
-    { id: 5, name: "Golden Glazed Ham", price: 32.00, desc: "Honey and clove glaze with a side of roasted chestnuts.", category: "savory", chef: true, img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" },
-    { id: 6, name: "North Pole Cocoa", price: 8.00, desc: "Thick european chocolate with a peppermint candy cane.", category: "warm", chef: false, img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80" },
-    { id: 7, name: "Yule Log", price: 14.50, desc: "Rolled sponge cake resembling a bark-covered log.", category: "sweet", chef: false, img: "https://images.unsplash.com/photo-1607920592519-bab4d790f489?auto=format&fit=crop&w=600&q=80" },
-    { id: 8, name: "Truffle Risotto", price: 26.00, desc: "Creamy arborio rice with black winter truffles.", category: "savory", chef: false, img: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=600&q=80" },
-    { id: 9, name: "Spiced Mulled Wine", price: 10.00, desc: "Warm red wine with star anise, cinnamon, and orange.", category: "warm", chef: false, img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80" }
-];
-
+let menuItems = [];
 let cart = JSON.parse(localStorage.getItem('winterFeastCart')) || [];
+
+// Load menu from JSON file
+async function loadMenu() {
+    try {
+        const response = await fetch('menu.json');
+        const data = await response.json();
+        menuItems = data.dishes;
+        console.log(`Loaded ${menuItems.length} dishes from menu.json`);
+        // Initialize menu after data is loaded
+        renderMenu('all');
+        updateCartUI();
+    } catch (error) {
+        console.error('Error loading menu:', error);
+        // Fallback error message
+        const grid = document.getElementById('menu-grid');
+        if (grid) {
+            grid.innerHTML = '<p class="text-red-500 text-center col-span-full text-xl">❄️ Error loading menu. Please refresh the page.</p>';
+        }
+    }
+}
 
 /* ---------------- NEW SNOW LOGIC ---------------- */
 const canvas = document.querySelector('.canvas'); // Updated selector
@@ -86,8 +95,9 @@ const renderSnow = () => {
 
 /* ---------------- APP LOGIC ---------------- */
 document.addEventListener('DOMContentLoaded', () => {
-    renderMenu('all');
-    updateCartUI();
+    // Load menu data first
+    loadMenu();
+    
     startCountdown();
     initParallax();
     
@@ -95,6 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     renderSnow();
+    
+    // Check cookie consent
+    checkCookieConsent();
 });
 
 function renderMenu(category) {
@@ -312,42 +325,38 @@ function toggleMusic(btn) {
     }
 }
 
-
-
-
-
 /* ---------------- COOKIE CONSENT ---------------- */
 function checkCookieConsent() {
-  const consent = localStorage.getItem('cookieConsent');
-  if (!consent) {
-    // Show popup after a brief delay for better UX
-    setTimeout(() => {
-      document.getElementById('cookie-popup').classList.remove('hidden');
-    }, 1000);
-  }
+    const consent = localStorage.getItem('cookieConsent');
+    if (!consent) {
+        // Show popup after a brief delay for better UX
+        setTimeout(() => {
+            document.getElementById('cookie-popup').classList.remove('hidden');
+        }, 1000);
+    }
 }
 
 function acceptCookies() {
-  localStorage.setItem('cookieConsent', 'accepted');
-  localStorage.setItem('cookieConsentDate', new Date().toISOString());
-  closeCookiePopup();
-  // Optional: Initialize analytics or other cookie-dependent features here
-  console.log('Cookies accepted');
+    localStorage.setItem('cookieConsent', 'accepted');
+    localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    closeCookiePopup();
+    // Optional: Initialize analytics or other cookie-dependent features here
+    console.log('Cookies accepted');
 }
 
 function rejectCookies() {
-  localStorage.setItem('cookieConsent', 'rejected');
-  localStorage.setItem('cookieConsentDate', new Date().toISOString());
-  closeCookiePopup();
-  console.log('Cookies rejected');
+    localStorage.setItem('cookieConsent', 'rejected');
+    localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    closeCookiePopup();
+    console.log('Cookies rejected');
 }
 
 function closeCookiePopup() {
-  const popup = document.getElementById('cookie-popup');
-  popup.style.animation = 'fadeOut 0.3s ease';
-  setTimeout(() => {
-    popup.classList.add('hidden');
-  }, 300);
+    const popup = document.getElementById('cookie-popup');
+    popup.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => {
+        popup.classList.add('hidden');
+    }, 300);
 }
 
 // Add fadeOut animation
@@ -359,6 +368,3 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-
-// Check consent on page load
-checkCookieConsent();
