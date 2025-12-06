@@ -106,9 +106,104 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeCanvas();
     renderSnow();
     
+    // Init Festive Music Player
+    initMusicPlayer();
+
     // Check cookie consent
     checkCookieConsent();
 });
+
+/* ---------------- FESTIVE MUSIC PLAYER ---------------- */
+function initMusicPlayer() {
+    const audio = document.getElementById('christmas-audio');
+    const player = document.getElementById('festive-player');
+    const playBtn = document.getElementById('play-pause-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+    const timeDisplay = document.getElementById('time-display');
+    const disc = document.getElementById('player-disc');
+    const volIcon = document.querySelector('.volume-control i');
+
+    if (!audio) return;
+
+    // Set initial volume
+    audio.volume = 0.5;
+
+    // Helper: Format Time (MM:SS)
+    const formatTime = (time) => {
+        if(isNaN(time)) return "0:00";
+        const min = Math.floor(time / 60);
+        const sec = Math.floor(time % 60);
+        return `${min}:${sec < 10 ? '0' + sec : sec}`;
+    };
+
+    // Toggle Play/Pause
+    const togglePlay = () => {
+        if (audio.paused) {
+            audio.play();
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            player.classList.add('playing');
+            disc.classList.add('playing');
+        } else {
+            audio.pause();
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            player.classList.remove('playing');
+            disc.classList.remove('playing');
+        }
+    };
+
+    playBtn.addEventListener('click', togglePlay);
+
+    // Update Progress Bar & Timer
+    audio.addEventListener('timeupdate', () => {
+        const { duration, currentTime } = audio;
+        const progressPercent = (currentTime / duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+        timeDisplay.innerText = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+    });
+
+    // Seek Functionality
+    progressContainer.addEventListener('click', (e) => {
+        const width = progressContainer.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audio.duration;
+        audio.currentTime = (clickX / width) * duration;
+    });
+
+    // Volume Control
+    volumeSlider.addEventListener('input', (e) => {
+        audio.volume = e.target.value;
+        if(audio.volume === 0) {
+            volIcon.className = 'fa-solid fa-volume-mute text-xs text-slate-400 mr-2';
+        } else if (audio.volume < 0.5) {
+            volIcon.className = 'fa-solid fa-volume-low text-xs text-slate-400 mr-2';
+        } else {
+            volIcon.className = 'fa-solid fa-volume-high text-xs text-slate-400 mr-2';
+        }
+    });
+
+    // Metadata loaded (for setting initial duration text)
+    audio.addEventListener('loadedmetadata', () => {
+        timeDisplay.innerText = `0:00 / ${formatTime(audio.duration)}`;
+    });
+
+    // Auto-Play Handling
+    // Browser policies might block autoplay. We try, and catch if it fails.
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Auto-play started
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            player.classList.add('playing');
+            disc.classList.add('playing');
+        }).catch(error => {
+            // Auto-play was prevented. 
+            // We leave the UI in "Paused" state so user can click to play.
+            console.log("Auto-play prevented by browser policy.");
+        });
+    }
+}
 
 function renderMenu(category) {
     const grid = document.getElementById('menu-grid');
@@ -125,7 +220,6 @@ function renderMenu(category) {
                 card.className = `menu-item glass-card rounded-2xl overflow-hidden group relative flex flex-col card-inner h-full opacity-0 transform translate-y-10`;
                 card.id = `item-${item.id}`;
                 
-                // Using the New Snowy Button Style below
                 card.innerHTML = `
                     <div class="h-56 overflow-hidden relative">
                         <img src="${item.img}" alt="${item.name}" id="img-${item.id}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -157,7 +251,7 @@ function renderMenu(category) {
             
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('bg-white', 'text-slate-900', 'border-transparent');
-                if(btn.innerText.toLowerCase() === category || (category === 'all' && btn.innerText === 'All')) {
+                if(btn.innerText.toLowerCase() === category || (category === 'all' && btn.innerText.includes('All'))) {
                     btn.classList.add('bg-white', 'text-slate-900', 'border-transparent');
                 }
             });
@@ -312,19 +406,6 @@ function startCountdown() {
     update();
 }
 
-function toggleMusic(btn) {
-    const icon = btn.querySelector('i');
-    if(icon.classList.contains('fa-volume-mute')) {
-        icon.classList.remove('fa-volume-mute');
-        icon.classList.add('fa-volume-up', 'text-cyan-400');
-        showToast('Festive ambiance enabled');
-    } else {
-        icon.classList.add('fa-volume-mute');
-        icon.classList.remove('fa-volume-up', 'text-cyan-400');
-        showToast('Sound muted');
-    }
-}
-
 /* ---------------- COOKIE CONSENT ---------------- */
 function checkCookieConsent() {
     const consent = localStorage.getItem('cookieConsent');
@@ -340,7 +421,6 @@ function acceptCookies() {
     localStorage.setItem('cookieConsent', 'accepted');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
     closeCookiePopup();
-    // Optional: Initialize analytics or other cookie-dependent features here
     console.log('Cookies accepted');
 }
 
