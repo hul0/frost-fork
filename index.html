@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>The Frosty Fork | Premium Winter Dining</title>
 
     <link rel="stylesheet" href="styles.css" />
@@ -47,9 +47,9 @@
             animation: {
               "aurora-move": "aurora 20s ease infinite",
               "pulse-gold": "pulseGold 2s infinite",
-              "twinkle": "twinkle 1.5s ease-in-out infinite",
-              "swing": "swing 3s ease-in-out infinite",
-              "float": "float 3s ease-in-out infinite",
+              twinkle: "twinkle 1.5s ease-in-out infinite",
+              swing: "swing 3s ease-in-out infinite",
+              float: "float 3s ease-in-out infinite",
               "spin-slow": "spin 8s linear infinite",
             },
             keyframes: {
@@ -81,7 +81,7 @@
     </script>
   </head>
   <body
-    class="font-body bg-christmas animate-aurora-move min-h-screen selection:bg-red-500 selection:text-white"
+    class="font-body bg-christmas animate-aurora-move min-h-screen selection:bg-red-500 selection:text-white overflow-x-hidden"
   >
     <!-- Audio Element -->
     <audio id="christmas-audio" src="christmas.mp3" loop preload="auto"></audio>
@@ -104,7 +104,7 @@
 
     <!-- Cookie Consent Popup -->
     <div id="cookie-popup" class="cookie-popup hidden">
-      <div class="cookie-content glass-panel-christmas">
+      <div class="cookie-content glass-panel-christmas mx-4">
         <div class="cookie-gif-container">
           <img
             src="https://media.tenor.com/0YOHIFECYasAAAAi/peepo-cookie-peepo.gif"
@@ -112,12 +112,10 @@
             class="cookie-gif"
           />
         </div>
-        <h2 class=" text-2xl font-bold mb-3">
-          🍪 Cookie Notice
-        </h2>
-        <p class="text-slate-200 mb-6 leading-relaxed">
+        <h2 class="text-xl md:text-2xl font-bold mb-3">🍪 Cookie Notice</h2>
+        <p class="text-sm md:text-base text-slate-200 mb-6 leading-relaxed">
           We use cookies to enhance your experience, remember your cart, and
-          analyze site traffic. By accepting, you agree to our use of cookies.
+          analyze site traffic.
         </p>
         <div class="cookie-buttons">
           <button onclick="acceptCookies()" class="snow-btn">
@@ -140,29 +138,28 @@
       id="navbar"
     >
       <div
-        class="glass-panel-christmas mx-4 mt-4 rounded-full px-8 py-4 flex justify-between items-center max-w-7xl lg:mx-auto shadow-[0_0_15px_rgba(196,30,58,0.25)]"
+        class="glass-panel-christmas mx-2 mt-2 md:mx-4 md:mt-4 rounded-full px-4 py-3 md:px-8 md:py-4 flex justify-between items-center max-w-7xl lg:mx-auto shadow-[0_0_15px_rgba(196,30,58,0.25)]"
       >
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 md:gap-3">
           <i
-            class="fa-solid fa-tree text-3xl text-christmas-green animate-pulse shadow-glow-christmas"
+            class="fa-solid fa-tree text-2xl md:text-3xl text-christmas-green animate-pulse shadow-glow-christmas"
           ></i>
           <h1
-            class="font-christmas text-2xl font-bold tracking-widest text-white uppercase"
+            class="font-christmas text-lg md:text-2xl font-bold tracking-widest text-white uppercase"
           >
             The Frosty <span class="text-christmas-red">Fork</span>
           </h1>
         </div>
 
         <div class="flex items-center gap-6">
-          <!-- Music Toggle Removed from here as requested -->
-
           <button
             onclick="toggleCart()"
             class="relative p-2 hover:bg-white/10 rounded-full transition-colors group"
             id="cart-btn-nav"
+            aria-label="Open Cart"
           >
             <i
-              class="fa-solid fa-sleigh text-2xl text-slate-300 group-hover:text-christmas-red transition-colors"
+              class="fa-solid fa-sleigh text-xl md:text-2xl text-slate-300 group-hover:text-christmas-red transition-colors"
             ></i>
             <span
               id="cart-badge"
@@ -179,41 +176,29 @@
       id="hero"
     >
       <!-- Christmas Tree Decorations -->
-      <div class="christmas-tree left-tree">
-        <div class="tree-top">⭐</div>
-        <div class="tree-section tree-section-1"></div>
-        <div class="tree-section tree-section-2"></div>
-        <div class="tree-section tree-section-3"></div>
-        <div class="tree-trunk "></div>
-        <div class="tree-lights">
-          <span class="tree-light" style="top: 15%; left: 45%;"></span>
-          <span class="tree-light" style="top: 25%; left: 30%;"></span>
-          <span class="tree-light" style="top: 25%; left: 65%;"></span>
-          <span class="tree-light" style="top: 40%; left: 20%;"></span>
-          <span class="tree-light" style="top: 40%; left: 50%;"></span>
-          <span class="tree-light" style="top: 40%; left: 75%;"></span>
-          <span class="tree-light" style="top: 60%; left: 15%;"></span>
-          <span class="tree-light" style="top: 60%; left: 45%;"></span>
-          <span class="tree-light" style="top: 60%; left: 80%;"></span>
-        </div>
-      </div>
-
-      <div class="christmas-tree right-tree">
+      <div class="christmas-tree left-tree hidden lg:block">
         <div class="tree-top">⭐</div>
         <div class="tree-section tree-section-1"></div>
         <div class="tree-section tree-section-2"></div>
         <div class="tree-section tree-section-3"></div>
         <div class="tree-trunk"></div>
         <div class="tree-lights">
-          <span class="tree-light" style="top: 15%; left: 45%;"></span>
-          <span class="tree-light" style="top: 25%; left: 30%;"></span>
-          <span class="tree-light" style="top: 25%; left: 65%;"></span>
-          <span class="tree-light" style="top: 40%; left: 20%;"></span>
-          <span class="tree-light" style="top: 40%; left: 50%;"></span>
-          <span class="tree-light" style="top: 40%; left: 75%;"></span>
-          <span class="tree-light" style="top: 60%; left: 15%;"></span>
-          <span class="tree-light" style="top: 60%; left: 45%;"></span>
-          <span class="tree-light" style="top: 60%; left: 80%;"></span>
+          <span class="tree-light" style="top: 15%; left: 45%"></span>
+          <span class="tree-light" style="top: 25%; left: 30%"></span>
+          <span class="tree-light" style="top: 25%; left: 65%"></span>
+        </div>
+      </div>
+
+      <div class="christmas-tree right-tree hidden lg:block">
+        <div class="tree-top">⭐</div>
+        <div class="tree-section tree-section-1"></div>
+        <div class="tree-section tree-section-2"></div>
+        <div class="tree-section tree-section-3"></div>
+        <div class="tree-trunk"></div>
+        <div class="tree-lights">
+          <span class="tree-light" style="top: 15%; left: 45%"></span>
+          <span class="tree-light" style="top: 25%; left: 30%"></span>
+          <span class="tree-light" style="top: 25%; left: 65%"></span>
         </div>
       </div>
 
@@ -226,24 +211,26 @@
         data-speed="0.08"
       ></div>
 
-      <div class="z-10 text-center max-w-5xl mx-auto" id="hero-content">
+      <div class="z-10 text-center max-w-5xl mx-auto pt-16 md:pt-0" id="hero-content">
         <div class="mb-4 inline-block">
           <span
-            class="py-1 px-4 border border-christmas-red/50 rounded-full bg-red-900/30 backdrop-blur-sm text-red-300 text-sm font-bold tracking-widest uppercase mb-4 animate-pulse"
+            class="py-1 px-3 md:px-4 border border-christmas-red/50 rounded-full bg-red-900/30 backdrop-blur-sm text-red-300 text-xs md:text-sm font-bold tracking-widest uppercase mb-4 animate-pulse"
           >
-            🎄 Special Discount for Byte Brigade Fam 🎅
+            Special Discount for Byte Brigade Fam 🎅
           </span>
         </div>
 
         <h2
-          class="font-christmas text-6xl md:text-8xl font-bold mb-6 leading-tight drop-shadow-2xl"
+          class="font-christmas text-5xl md:text-8xl font-bold mb-4 md:mb-6 leading-tight drop-shadow-2xl"
         >
           <span class="text-gradient-christmas block">Dining In The</span>
-          <span class="text-gradient-gold-christmas block mt-2">Christmas Spirit</span>
+          <span class="text-gradient-gold-christmas block mt-2"
+            >Christmas Spirit</span
+          >
         </h2>
 
         <p
-          class="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed"
+          class="text-base md:text-xl text-slate-300 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed px-4"
         >
           Experience a culinary winter wonderland where every dish is crafted
           with frost, fire, and magic. 🎁✨
@@ -253,6 +240,7 @@
           <button
             type="button"
             class="group relative px-8 py-4 bg-white/10 overflow-hidden rounded-full backdrop-blur-sm border border-red-500/30 text-white font-bold transition-all hover:border-christmas-red hover:shadow-[0_0_20px_rgba(196,30,58,0.4)]"
+            onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})"
           >
             <div
               class="absolute inset-0 w-0 bg-christmas-red/20 transition-all duration-[250ms] ease-out group-hover:w-full"
@@ -267,55 +255,63 @@
         </div>
 
         <div
-          class="mt-16 grid grid-cols-4 gap-4 max-w-lg mx-auto text-center glass-panel-christmas p-4 rounded-xl"
+          class="mt-12 md:mt-16 grid grid-cols-4 gap-2 md:gap-4 max-w-lg mx-auto text-center glass-panel-christmas p-4 rounded-xl"
         >
           <div>
-            <span class="block font-header text-2xl text-christmas-red" id="days"
+            <span
+              class="block font-header text-xl md:text-2xl text-christmas-red"
+              id="days"
               >00</span
-            ><span class="text-xs text-slate-400 uppercase">Days</span>
+            ><span class="text-[10px] md:text-xs text-slate-400 uppercase">Days</span>
           </div>
           <div>
-            <span class="block font-header text-2xl text-christmas-green" id="hours"
+            <span
+              class="block font-header text-xl md:text-2xl text-christmas-green"
+              id="hours"
               >00</span
-            ><span class="text-xs text-slate-400 uppercase">Hrs</span>
+            ><span class="text-[10px] md:text-xs text-slate-400 uppercase">Hrs</span>
           </div>
           <div>
-            <span class="block font-header text-2xl text-christmas-gold" id="mins"
+            <span
+              class="block font-header text-xl md:text-2xl text-christmas-gold"
+              id="mins"
               >00</span
-            ><span class="text-xs text-slate-400 uppercase">Mins</span>
+            ><span class="text-[10px] md:text-xs text-slate-400 uppercase">Mins</span>
           </div>
           <div>
-            <span class="block font-header text-2xl text-christmas-red" id="secs"
+            <span
+              class="block font-header text-xl md:text-2xl text-christmas-red"
+              id="secs"
               >00</span
-            ><span class="text-xs text-slate-400 uppercase">Secs</span>
+            ><span class="text-[10px] md:text-xs text-slate-400 uppercase">Secs</span>
           </div>
         </div>
       </div>
     </header>
 
-    <main id="menu" class="relative z-10 max-w-7xl mx-auto px-4 py-24">
-      <div class="flex flex-wrap justify-center gap-4 mb-16" id="filters">
+    <main id="menu" class="relative z-10 max-w-7xl mx-auto px-4 py-12 md:py-24">
+      <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-10 md:mb-16" id="filters">
         <button
           onclick="filterMenu('all')"
-          class="filter-btn active px-8 py-2 rounded-full border border-christmas-red/30 text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md hover:shadow-[0_0_15px_rgba(196,30,58,0.3)]"
+          class="filter-btn active px-4 md:px-8 py-2 rounded-full border border-christmas-red/30 text-sm md:text-base text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md"
         >
           🎅 All
         </button>
         <button
           onclick="filterMenu('warm')"
-          class="filter-btn px-8 py-2 rounded-full border border-christmas-red/30 text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md hover:shadow-[0_0_15px_rgba(196,30,58,0.3)]"
+          class="filter-btn px-4 md:px-8 py-2 rounded-full border border-christmas-red/30 text-sm md:text-base text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md"
         >
           🔥 Warmers
         </button>
         <button
           onclick="filterMenu('sweet')"
-          class="filter-btn px-8 py-2 rounded-full border border-christmas-red/30 text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md hover:shadow-[0_0_15px_rgba(196,30,58,0.3)]"
+          class="filter-btn px-4 md:px-8 py-2 rounded-full border border-christmas-red/30 text-sm md:text-base text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md"
         >
           🍬 Sweets
         </button>
         <button
           onclick="filterMenu('savory')"
-          class="filter-btn px-8 py-2 rounded-full border border-christmas-red/30 text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md hover:shadow-[0_0_15px_rgba(196,30,58,0.3)]"
+          class="filter-btn px-4 md:px-8 py-2 rounded-full border border-christmas-red/30 text-sm md:text-base text-slate-300 font-bold hover:bg-red-500/20 hover:text-white transition-all bg-white/5 backdrop-blur-md"
         >
           🎄 Savory
         </button>
@@ -323,9 +319,110 @@
 
       <div
         id="menu-grid"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-container"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 perspective-container"
       ></div>
     </main>
+    <footer class="relative z-10 mt-auto pt-20 pb-10 border-t border-white/5 bg-[#0a0e1a]/60 backdrop-blur-xl">
+      
+      <div class="absolute top-0 left-0 w-full overflow-hidden leading-none transform -translate-y-full">
+        <svg class="relative block w-[calc(100%+1.3px)] h-[50px] text-white/5" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="currentColor"></path>
+        </svg>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          
+          <div class="space-y-6">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-tree text-3xl text-christmas-green drop-shadow-[0_0_10px_rgba(22,91,51,0.5)]"></i>
+              <span class="font-christmas text-3xl font-bold text-white tracking-wider">The Frosty <span class="text-christmas-red">Fork</span></span>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              Bringing the warmth of the holidays to your plate. Experience the magic of winter dining with our chef-curated seasonal masterpieces.
+            </p>
+            <div class="flex gap-4">
+              <a href="https://github.com/hul0/frost-fork" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-christmas-red hover:text-white transition-all duration-300 group">
+                <i class="fab fa-github group-hover:scale-110 transition-transform"></i>
+              </a>
+              <a href="https://x.com/hulocyber" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-christmas-red hover:text-white transition-all duration-300 group">
+                <i class="fab fa-twitter group-hover:scale-110 transition-transform"></i>
+              </a>
+              <a href="https://youtube.com/@hulocyber" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-christmas-red hover:text-white transition-all duration-300 group">
+                <i class="fab fa-youtube group-hover:scale-110 transition-transform"></i>
+              </a>
+              <a href="https://www.hulobiral.online" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-300 hover:bg-christmas-red hover:text-white transition-all duration-300 group">
+                <i class="fa-solid fa-globe group-hover:scale-110 transition-transform"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- <div>
+            <h3 class="font-header text-xl text-christmas-gold font-bold mb-6 relative inline-block">
+              Quick Links
+              <span class="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-christmas-red"></span>
+            </h3>
+            <ul class="space-y-4">
+              <li><a href="#" class="text-slate-300 hover:text-christmas-red hover:pl-2 transition-all duration-300 flex items-center gap-2"><i class="fas fa-snowflake text-xs opacity-50"></i> Github</a></li>
+              <li><a href="#" class="text-slate-300 hover:text-christmas-red hover:pl-2 transition-all duration-300 flex items-center gap-2"><i class="fas fa-snowflake text-xs opacity-50"></i> Portfolio</a></li>
+              <li><a href="#" class="text-slate-300 hover:text-christmas-red hover:pl-2 transition-all duration-300 flex items-center gap-2"><i class="fas fa-snowflake text-xs opacity-50"></i> Gitlab</a></li>
+            </ul>
+          </div> -->
+
+          <div>
+            <h3 class="font-header text-xl text-christmas-gold font-bold mb-6 relative inline-block">
+              Visit Santa
+              <span class="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-christmas-red"></span>
+            </h3>
+            <ul class="space-y-4 text-slate-300">
+              <li class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt text-christmas-red mt-1"></i>
+                <span>Garia<br>Kolkata, West Bengal</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-phone text-christmas-red"></i>
+                <span>+919593035680</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-envelope text-christmas-red"></i>
+                <span>hulo@hulobiral.online</span>
+              </li>
+              <li class="mt-4 text-sm text-christmas-green font-bold">
+                <i class="fas fa-clock mr-2"></i> Open Daily: 10am - 10pm
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-header text-xl text-christmas-gold font-bold mb-6 relative inline-block">
+              Naughty or Nice List?
+              <span class="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-christmas-red"></span>
+            </h3>
+            <p class="text-slate-400 text-sm mb-4">Join our newsletter for exclusive holiday recipes and secret discounts.</p>
+            <form class="space-y-3" onsubmit="event.preventDefault();">
+              <div class="relative">
+                <input type="email" placeholder="Your email address" class="w-full bg-white/5 border border-white/10 rounded-full px-5 py-3 text-slate-200 focus:outline-none focus:border-christmas-red focus:bg-white/10 transition-all placeholder:text-slate-600">
+              </div>
+              <button class="snow-btn w-full bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white font-bold py-3 rounded-full transition-all duration-300 shadow-lg shadow-red-900/50 flex items-center justify-center gap-2 group">
+                <span>Subscribe</span>
+                <i class="fas fa-sleigh transform group-hover:-translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-slate-500 text-sm">
+            &copy; 2025 Hulo. All rights reserved.
+          </p>
+          <div class="flex items-center gap-6 text-sm text-slate-500">
+            <span class="flex items-center gap-1">Made with <i class="fas fa-snowflake text-christmas-red animate-spin-slow"></i>HTML & <i class="fas fa-heart text-christmas-red"></i>CSS</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500/50 to-transparent blur-sm"></div>
+    </footer>
 
     <div
       id="cart-overlay"
@@ -335,13 +432,14 @@
 
     <div
       id="cart-drawer"
-      class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#0f172a]/90 backdrop-blur-xl border-l border-red-500/30 z-[70] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-2xl shadow-red-500/20"
+      class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-[#0f172a]/95 backdrop-blur-xl border-l border-red-500/30 z-[70] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col shadow-2xl shadow-red-500/20"
     >
       <div
         class="p-6 border-b border-red-500/20 flex justify-between items-center bg-white/5"
       >
         <h2 class="font-christmas text-2xl text-white">
-          <i class="fas fa-shopping-bag text-christmas-red mr-2"></i> Your Sleigh 🎅
+          <i class="fas fa-shopping-bag text-christmas-red mr-2"></i> Your
+          Sleigh 🎅
         </h2>
         <button
           onclick="toggleCart()"
@@ -371,48 +469,56 @@
       </div>
     </div>
 
-    <!-- Festive Music Player -->
-    <div id="festive-player" class="festive-player">
-      <div class="player-disc-container">
-          <div class="player-disc" id="player-disc">
-              <div class="disc-grooves"></div>
-              <div class="disc-label">
-                  <i class="fa-solid fa-snowflake"></i>
-              </div>
+    <!-- Festive Music Player (Click to Expand) -->
+    <div id="festive-player" class="festive-player collapsed">
+        <!-- The trigger/icon part -->
+      <div class="player-disc-container" id="player-trigger" title="Click to open music player">
+        <div class="player-disc" id="player-disc">
+          <div class="disc-grooves"></div>
+          <div class="disc-label">
+            <i class="fa-solid fa-snowflake"></i>
           </div>
-          <div class="music-notes" id="music-notes">
-              <span class="note">🎵</span>
-              <span class="note">🎶</span>
-              <span class="note">♪</span>
-          </div>
+        </div>
+        <div class="music-notes" id="music-notes">
+          <span class="note">♪</span>
+          <span class="note">♪</span>
+          <span class="note">♪</span>
+        </div>
       </div>
-      
+
       <div class="player-controls">
-          <div class="player-info">
-              <span class="song-title">Christmas Vibes</span>
-              <span class="time-display" id="time-display">0:00 / 0:00</span>
+        <div class="player-info p-x-2">
+          <span class="song-title">Christmas</span>
+          <span class="time-display" id="time-display">  0:00 / 0:00</span>
+        </div>
+        <div class="progress-container" id="progress-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="control-buttons">
+          <button id="play-pause-btn" class="control-btn play-btn">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <div class="volume-control">
+            <i class="fa-solid fa-volume-high text-xs text-slate-400 mr-2"></i>
+            <input
+              type="range"
+              id="volume-slider"
+              min="0"
+              max="1"
+              step="0.1"
+              value="0.5"
+            />
           </div>
-          <div class="progress-container" id="progress-container">
-              <div class="progress-bar" id="progress-bar"></div>
-          </div>
-          <div class="control-buttons">
-              <button id="play-pause-btn" class="control-btn play-btn">
-                  <i class="fa-solid fa-play"></i>
-              </button>
-              <div class="volume-control">
-                  <i class="fa-solid fa-volume-high text-xs text-slate-400 mr-2"></i>
-                  <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
-              </div>
-          </div>
+        </div>
       </div>
     </div>
 
     <div
       id="toast"
-      class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[80] glass-panel-christmas px-6 py-3 rounded-full flex items-center gap-3 translate-y-20 opacity-0 transition-all duration-300 shadow-2xl"
+      class="fixed bottom-20 md:bottom-8 left-1/2 -translate-x-1/2 z-[80] glass-panel-christmas px-6 py-3 rounded-full flex items-center gap-3 translate-y-20 opacity-0 transition-all duration-300 shadow-2xl w-max max-w-[90vw]"
     >
       <i class="fas fa-check-circle text-christmas-green"></i>
-      <span id="toast-msg" class="text-sm font-semibold text-white"
+      <span id="toast-msg" class="text-sm font-semibold text-white whitespace-nowrap overflow-hidden text-ellipsis"
         >Item added</span
       >
     </div>

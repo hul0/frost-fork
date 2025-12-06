@@ -25,7 +25,7 @@ async function loadMenu() {
 }
 
 /* ---------------- NEW SNOW LOGIC ---------------- */
-const canvas = document.querySelector('.canvas'); // Updated selector
+const canvas = document.querySelector('.canvas'); 
 const ctx = canvas ? canvas.getContext('2d') : null;
 const pixelRatio = window.devicePixelRatio || 1;
 const snowflakes = [];
@@ -64,7 +64,11 @@ class Snowflake {
 }
 
 const createSnowflakes = () => {
-    const snowflakeCount = Math.floor(window.innerWidth * window.innerHeight / 1400);
+    // Reduced snowflake count for mobile performance
+    const isMobile = window.innerWidth < 768;
+    const density = isMobile ? 2500 : 1400; 
+    const snowflakeCount = Math.floor(window.innerWidth * window.innerHeight / density);
+    
     for (let i = 0; i < snowflakeCount; i++) {
         snowflakes.push(new Snowflake());
     }
@@ -99,7 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMenu();
     
     startCountdown();
-    initParallax();
+    
+    // Only init parallax if not on mobile to save battery/performance
+    if (window.innerWidth > 768) {
+        initParallax();
+    }
     
     // Init New Snow System
     window.addEventListener('resize', resizeCanvas);
@@ -117,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initMusicPlayer() {
     const audio = document.getElementById('christmas-audio');
     const player = document.getElementById('festive-player');
+    const playerTrigger = document.getElementById('player-trigger');
     const playBtn = document.getElementById('play-pause-btn');
     const volumeSlider = document.getElementById('volume-slider');
     const progressContainer = document.getElementById('progress-container');
@@ -126,6 +135,26 @@ function initMusicPlayer() {
     const volIcon = document.querySelector('.volume-control i');
 
     if (!audio) return;
+
+    // --- EXPAND/COLLAPSE LOGIC ---
+    if (playerTrigger && player) {
+        playerTrigger.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent triggering document click
+            player.classList.toggle('collapsed');
+        });
+
+        // Close player when clicking outside (Better UX for mobile)
+        document.addEventListener('click', (e) => {
+            if (!player.contains(e.target) && !player.classList.contains('collapsed')) {
+                player.classList.add('collapsed');
+            }
+        });
+
+        // Prevent closing when clicking inside controls
+        player.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
 
     // Set initial volume
     audio.volume = 0.5;
@@ -141,10 +170,13 @@ function initMusicPlayer() {
     // Toggle Play/Pause
     const togglePlay = () => {
         if (audio.paused) {
-            audio.play();
-            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-            player.classList.add('playing');
-            disc.classList.add('playing');
+            audio.play().then(() => {
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                player.classList.add('playing');
+                disc.classList.add('playing');
+                // Auto-expand if playing and currently collapsed (optional preference)
+                // player.classList.remove('collapsed'); 
+            }).catch(e => console.log("Play failed:", e));
         } else {
             audio.pause();
             playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
@@ -164,12 +196,15 @@ function initMusicPlayer() {
     });
 
     // Seek Functionality
-    progressContainer.addEventListener('click', (e) => {
+    const seek = (e) => {
         const width = progressContainer.clientWidth;
-        const clickX = e.offsetX;
+        // Handle both mouse and touch events
+        const clickX = (e.offsetX !== undefined) ? e.offsetX : (e.touches[0].clientX - progressContainer.getBoundingClientRect().left);
         const duration = audio.duration;
         audio.currentTime = (clickX / width) * duration;
-    });
+    };
+
+    progressContainer.addEventListener('click', seek);
 
     // Volume Control
     volumeSlider.addEventListener('input', (e) => {
@@ -207,6 +242,8 @@ function initMusicPlayer() {
 
 function renderMenu(category) {
     const grid = document.getElementById('menu-grid');
+    if (!grid) return;
+    
     gsap.to(grid.children, {
         opacity: 0,
         y: 20,
@@ -221,17 +258,17 @@ function renderMenu(category) {
                 card.id = `item-${item.id}`;
                 
                 card.innerHTML = `
-                    <div class="h-56 overflow-hidden relative">
+                    <div class="h-48 md:h-56 overflow-hidden relative">
                         <img src="${item.img}" alt="${item.name}" id="img-${item.id}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
-                        ${item.chef ? `<div class="absolute top-3 right-3 bg-gold-luxury/90 text-slate-900 text-xs font-bold px-3 py-1 rounded-full animate-pulse-gold uppercase tracking-wider"><i class="fas fa-crown mr-1"></i> Chef's Choice</div>` : ''}
+                        ${item.chef ? `<div class="absolute top-3 right-3 bg-gold-luxury/90 text-slate-900 text-[10px] md:text-xs font-bold px-2 md:px-3 py-1 rounded-full animate-pulse-gold uppercase tracking-wider"><i class="fas fa-crown mr-1"></i> Chef's Choice</div>` : ''}
                     </div>
-                    <div class="p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-transparent to-slate-900/50">
+                    <div class="p-4 md:p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-b from-transparent to-slate-900/50">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-header text-xl text-white group-hover:text-cyan-300 transition-colors">${item.name}</h3>
-                            <span class="font-header text-xl text-cyan-400">$${item.price.toFixed(2)}</span>
+                            <h3 class="font-header text-lg md:text-xl text-white group-hover:text-cyan-300 transition-colors">${item.name}</h3>
+                            <span class="font-header text-lg md:text-xl text-cyan-400">$${item.price.toFixed(2)}</span>
                         </div>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 font-light leading-relaxed">${item.desc}</p>
+                        <p class="text-slate-400 text-xs md:text-sm mb-4 md:mb-6 flex-1 font-light leading-relaxed">${item.desc}</p>
                         
                         <div class="pt-2">
                             <button onclick="addToCart(event, ${item.id})" class="snow-btn">
@@ -272,7 +309,10 @@ function addToCart(event, id) {
     const imgEl = document.getElementById(`img-${id}`);
     const cartIcon = document.getElementById('cart-btn-nav');
     
-    if(imgEl && cartIcon) {
+    // Skip flying image on mobile to prevent layout issues/performance drops
+    const isMobile = window.innerWidth < 768;
+
+    if(imgEl && cartIcon && !isMobile) {
         const flyImg = imgEl.cloneNode();
         const rect = imgEl.getBoundingClientRect();
         const targetRect = cartIcon.getBoundingClientRect();
@@ -296,37 +336,53 @@ function addToCart(event, id) {
                 showToast(`Added ${item.name}`);
             }
         });
-    } else { updateCartUI(); }
+    } else { 
+        // Simple UI update for mobile
+        updateCartUI();
+        showToast(`Added ${item.name}`);
+        // Small wobble on cart icon
+        if(cartIcon) {
+             gsap.fromTo(cartIcon, { rotate: -15, scale: 1.1 }, { rotate: 0, scale: 1, duration: 0.4 });
+        }
+    }
 }
 
 function updateCartUI() {
     const badge = document.getElementById('cart-badge');
     const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
-    badge.innerText = totalQty;
-    badge.classList.toggle('scale-0', totalQty === 0);
-    badge.classList.toggle('scale-100', totalQty > 0);
+    if (badge) {
+        badge.innerText = totalQty;
+        badge.classList.toggle('scale-0', totalQty === 0);
+        badge.classList.toggle('scale-100', totalQty > 0);
+    }
     
     const container = document.getElementById('cart-items');
-    if(cart.length === 0) {
-        container.innerHTML = `<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-regular fa-snowflake text-6xl text-cyan-200 mb-4 animate-pulse"></i><p class="font-header text-xl text-slate-300">It's cold in here...</p></div>`;
-    } else {
-        container.innerHTML = cart.map(item => `
-            <div class="glass-card p-3 rounded-lg flex gap-3 items-center border-l-2 border-cyan-400">
-                <img src="${item.img}" class="w-12 h-12 rounded object-cover">
-                <div class="flex-1">
-                    <h4 class="font-bold text-slate-200 text-sm">${item.name}</h4>
-                    <p class="text-cyan-400 text-xs">$${item.price}</p>
+    if (container) {
+        if(cart.length === 0) {
+            container.innerHTML = `<div class="flex flex-col items-center justify-center h-full opacity-50"><i class="fa-regular fa-snowflake text-6xl text-cyan-200 mb-4 animate-pulse"></i><p class="font-header text-xl text-slate-300">It's cold in here...</p></div>`;
+        } else {
+            container.innerHTML = cart.map(item => `
+                <div class="glass-card p-3 rounded-lg flex gap-3 items-center border-l-2 border-cyan-400">
+                    <img src="${item.img}" class="w-12 h-12 rounded object-cover">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-200 text-sm">${item.name}</h4>
+                        <p class="text-cyan-400 text-xs">$${item.price}</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white/10 rounded px-1">
+                        <button onclick="changeQty(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center text-slate-300 hover:text-white">-</button>
+                        <span class="text-xs font-bold text-white w-4 text-center">${item.qty}</span>
+                        <button onclick="changeQty(${item.id}, 1)" class="w-6 h-6 flex items-center justify-center text-slate-300 hover:text-white">+</button>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 bg-white/10 rounded px-1">
-                    <button onclick="changeQty(${item.id}, -1)" class="w-5 h-5 flex items-center justify-center text-slate-300 hover:text-white">-</button>
-                    <span class="text-xs font-bold text-white w-3 text-center">${item.qty}</span>
-                    <button onclick="changeQty(${item.id}, 1)" class="w-5 h-5 flex items-center justify-center text-slate-300 hover:text-white">+</button>
-                </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
     }
-    const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
-    document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+    
+    const totalEl = document.getElementById('cart-total');
+    if (totalEl) {
+        const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+        totalEl.innerText = `$${total.toFixed(2)}`;
+    }
 }
 
 function changeQty(id, delta) {
@@ -342,6 +398,8 @@ function changeQty(id, delta) {
 function toggleCart() {
     const drawer = document.getElementById('cart-drawer');
     const overlay = document.getElementById('cart-overlay');
+    if (!drawer || !overlay) return;
+
     const isOpen = !drawer.classList.contains('translate-x-full');
     if(isOpen) {
         drawer.classList.add('translate-x-full');
@@ -367,7 +425,10 @@ function saveCart() { localStorage.setItem('winterFeastCart', JSON.stringify(car
 
 function showToast(msg) {
     const toast = document.getElementById('toast');
-    document.getElementById('toast-msg').innerText = msg;
+    const msgEl = document.getElementById('toast-msg');
+    if (!toast || !msgEl) return;
+    
+    msgEl.innerText = msg;
     toast.classList.remove('translate-y-20', 'opacity-0');
     setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
 }
@@ -375,13 +436,20 @@ function showToast(msg) {
 function initParallax() {
     const hero = document.getElementById('hero');
     const els = document.querySelectorAll('.parallax-el');
+    if (!hero) return;
+
     hero.addEventListener('mousemove', (e) => {
-        const x = (window.innerWidth - e.pageX * 2) / 100;
-        const y = (window.innerHeight - e.pageY * 2) / 100;
-        document.getElementById('hero-content').style.transform = `translate(${x/5}px, ${y/5}px)`;
-        els.forEach(el => {
-            const speed = el.getAttribute('data-speed');
-            el.style.transform = `translate(${x * speed * 50}px, ${y * speed * 50}px)`;
+        // Debounce or verify performance in heavy apps
+        requestAnimationFrame(() => {
+            const x = (window.innerWidth - e.pageX * 2) / 100;
+            const y = (window.innerHeight - e.pageY * 2) / 100;
+            const content = document.getElementById('hero-content');
+            if(content) content.style.transform = `translate(${x/5}px, ${y/5}px)`;
+            
+            els.forEach(el => {
+                const speed = el.getAttribute('data-speed');
+                el.style.transform = `translate(${x * speed * 50}px, ${y * speed * 50}px)`;
+            });
         });
     });
 }
@@ -393,14 +461,21 @@ function startCountdown() {
         const now = new Date();
         const diff = target - now;
         if (diff <= 0) return;
+        
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
-        document.getElementById('days').innerText = String(d).padStart(2, '0');
-        document.getElementById('hours').innerText = String(h).padStart(2, '0');
-        document.getElementById('mins').innerText = String(m).padStart(2, '0');
-        document.getElementById('secs').innerText = String(s).padStart(2, '0');
+        
+        const elD = document.getElementById('days');
+        const elH = document.getElementById('hours');
+        const elM = document.getElementById('mins');
+        const elS = document.getElementById('secs');
+        
+        if(elD) elD.innerText = String(d).padStart(2, '0');
+        if(elH) elH.innerText = String(h).padStart(2, '0');
+        if(elM) elM.innerText = String(m).padStart(2, '0');
+        if(elS) elS.innerText = String(s).padStart(2, '0');
     }
     setInterval(update, 1000);
     update();
@@ -412,7 +487,8 @@ function checkCookieConsent() {
     if (!consent) {
         // Show popup after a brief delay for better UX
         setTimeout(() => {
-            document.getElementById('cookie-popup').classList.remove('hidden');
+            const popup = document.getElementById('cookie-popup');
+            if(popup) popup.classList.remove('hidden');
         }, 1000);
     }
 }
@@ -433,13 +509,15 @@ function rejectCookies() {
 
 function closeCookiePopup() {
     const popup = document.getElementById('cookie-popup');
-    popup.style.animation = 'fadeOut 0.3s ease';
-    setTimeout(() => {
-        popup.classList.add('hidden');
-    }, 300);
+    if(popup) {
+        popup.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+            popup.classList.add('hidden');
+        }, 300);
+    }
 }
 
-// Add fadeOut animation
+// Add fadeOut animation dynamically
 const style = document.createElement('style');
 style.textContent = `
   @keyframes fadeOut {
